@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nginx:
+    build: docker/nginx
+    ports:
+      - 8099:80
+    links:
+      - fpm
+    volumes:
+      - ./:/var/www/rt-chat
+  fpm:
+    build: docker/fpm
+    volumes:
+      - ./:/var/www/rt-chat
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
+    restart: always
