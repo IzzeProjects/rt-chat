@@ -4,13 +4,13 @@ services:
   nginx:
     build: docker/nginx
     ports:
-      - 8099:80
+      - 80:80
     links:
-      - fpm
+      - php
     volumes:
       - ./:/var/www/rt-chat
-  fpm:
-    build: docker/fpm
+  php:
+    build: docker/php
     volumes:
       - ./:/var/www/rt-chat
   postgres:
@@ -20,3 +20,9 @@ services:
     ports:
       - 5432:5432
     restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
