@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 /**
  * Конетроллер по умолчанию
  *
@@ -13,12 +14,10 @@ class IndexController extends Controller
 {
     /**
      * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function __invoke(Request $request)
     {
-        $redis = new \Redis();
-        $redis->connect('redis');
-        $redis->set('test', json_encode(['sfs', 'fsfsf']));
-        dd(json_decode($redis->get('test'), true));
+        return view('welcome');
     }
 }
