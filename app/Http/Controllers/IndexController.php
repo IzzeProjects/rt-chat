@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Конетроллер по умолчанию
@@ -12,12 +13,15 @@ use Illuminate\Http\Request;
  */
 class IndexController extends Controller
 {
+
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): View
     {
-        return view('welcome');
+        return view('welcome', [
+            'user' => $request->user()
+        ]);
     }
 }

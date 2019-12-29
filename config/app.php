@@ -167,6 +167,7 @@ return [
          */
 
         SwooleTW\Http\LaravelServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Application Service Providers...

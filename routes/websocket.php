@@ -1,7 +1,9 @@
 <?php
 
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use SwooleTW\Http\Websocket\Facades\Websocket;
 
 /*
@@ -14,13 +16,25 @@ use SwooleTW\Http\Websocket\Facades\Websocket;
 */
 
 Websocket::on('connect', function ($websocket, Request $request) {
-   echo 'New Visitor ! :)' . "\n";
+    /** @var \SwooleTW\Http\Websocket\Websocket $websocket */
+    /** @var User $user */
+    $user = $request->user();
+
+    $websocket->loginUsing($request->user());
+
+    $websocket->join('test');
+
+    echo 'Hello  ! ' . $user->name . ':)'.  "\n";
 });
 
 Websocket::on('disconnect', function ($websocket) {
-    echo 'Visitor is left ! :(' . "\n";
+    /** @var \SwooleTW\Http\Websocket\Websocket $websocket */
+    /** @var User $user */
+    $user = auth()->user();
+    echo  $user->name .' is left ! :(' . "\n";
 });
 
 Websocket::on('example', function ($websocket, $data) {
-    $websocket->emit('message', $data);
+    /** @var \SwooleTW\Http\Websocket\Websocket $websocket */
+    $websocket->broadcast()->to('test')->emit('message', $data);
 });

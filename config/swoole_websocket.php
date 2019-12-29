@@ -30,9 +30,10 @@ return [
     |--------------------------------------------------------------------------
     */
     'middleware' => [
-         SwooleTW\Http\Websocket\Middleware\DecryptCookies::class,
-         SwooleTW\Http\Websocket\Middleware\StartSession::class,
-         SwooleTW\Http\Websocket\Middleware\Authenticate::class,
+//        \App\Http\Middleware\SetUserForWebSocket::class,
+        SwooleTW\Http\Websocket\Middleware\DecryptCookies::class,
+        \App\Http\Middleware\TestSession::class,
+        SwooleTW\Http\Websocket\Middleware\Authenticate::class,
     ],
 
     /*
@@ -92,7 +93,7 @@ return [
 
         'redis' => [
             'server' => [
-                'host' => env('REDIS_HOST', '127.0.0.1'),
+                'host' => env('REDIS_HOST', 'redis'),
                 'password' => env('REDIS_PASSWORD', null),
                 'port' => env('REDIS_PORT', 6379),
                 'database' => 0,

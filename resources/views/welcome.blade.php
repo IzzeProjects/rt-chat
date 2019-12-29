@@ -32,7 +32,8 @@
                 <div class="content-clocks">
                     <clocks></clocks>
                 </div>
-                <store></store>
+
+                <store user='{{$user}}'></store>
             </div>
         </div>
     </section>

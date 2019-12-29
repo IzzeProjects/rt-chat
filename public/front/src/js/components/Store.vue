@@ -5,6 +5,9 @@
                 {{post.title}}
             </div>
             <input type="text" @keydown.enter="sendMessage" v-model='message'>
+            <ul>
+                <li v-for="item in messages">{{item}}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -15,26 +18,46 @@
     const {mapGetters, mapActions} = createNamespacedHelpers('storeModule')
 
     export default {
+        props: {
+            user: String
+        },
         name: "Store",
-        computed: mapGetters(['allPosts']),
+        computed: {
+            ...mapGetters(['allPosts']),
+            userParsed: function () {
+                return JSON.parse(this.user)
+            }
+        },
         data() {
             return {
                 message: '',
-                socket: null
+                socket: null,
+                messages: []
             }
         },
         methods: {
             ...mapActions(['fetchPosts']),
             sendMessage() {
-                this.socket.emit('example', {data: {message: this.message}})
+                this.socket.emit('example', this.message)
             }
         },
         mounted() {
             this.fetchPosts()
-            this.socket = io.connect('ws://192.168.88.253:9501', {transports: ['websocket']});
-            this.socket.on('message', function (socket) {
+            const url = new URL('ws://rt-chat.local/:9501')
+            console.log(this.userParsed)
+            Object.keys(this.userParsed).forEach(item => {
+                url.searchParams.set(item, this.userParsed[item])
+            })
+            console.log(url.href)
+            this.socket = io.connect('ws://rt-chat.local:9501', {transports: ['websocket'], fdfdf: 'test'});
+            this.socket.on('message', (socket) => {
+                this.messages.push(socket)
                 console.log(socket)
             })
+
+
+            console.log()
+
         },
 
     }
