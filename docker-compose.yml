@@ -5,6 +5,7 @@ services:
     build: docker/nginx
     ports:
       - 80:80
+      - 8080:8080
     links:
       - php
     volumes:
