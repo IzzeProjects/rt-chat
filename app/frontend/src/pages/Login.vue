@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    sendLogin () {
+    async sendLogin () {
       this.$refs.login.validate()
       this.$refs.password.validate()
 
@@ -64,15 +64,21 @@ export default {
       }
       console.log(API_BASE_URL)
 
-      this.$axios.post(
-        `${API_BASE_URL}/auth/login`
-      )
-        .then((response) => {
-          this.data = response.data
-        })
-        .catch(() => {
-          console.log(12321)
-        })
+      const res = await this.$http.post(`${API_BASE_URL}/auth/login`, { login: this.login, password: this.password }).catch(() => {
+        console.warn('...Catched')
+      })
+      if (res) {
+        console.log(res)
+      }
+      // this.$axios.post(
+      //   `${API_BASE_URL}/auth/login`
+      // )
+      //   .then((response) => {
+      //     this.data = response.data
+      //   })
+      //   .catch(() => {
+      //     console.log(12321)
+      //   })
     }
   }
 }
