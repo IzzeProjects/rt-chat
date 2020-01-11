@@ -17,7 +17,7 @@ RUN pecl install -o -f redis swoole \
 RUN apt update \
 && apt install nodejs -y \
 && apt install npm -y \
-&& npm install yarn -g -y
+&& npm install yarn -g -y \
 && yarn global add @quasar/cli
 
 WORKDIR /var/www/rt-chat
