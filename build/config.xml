@@ -72,6 +72,7 @@
     <target name="set permissions">
         <echo msg="Set permissions:"/>
         <exec command="chmod -R 0777 storage/" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+        <exec command="chmod -R 0777 frontend/" dir="${project.basedir}/app" passthru="true" checkreturn="true"/>
     </target>
 
 </project>

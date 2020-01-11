@@ -11,8 +11,11 @@
 
 ### Сборка проекта
 В папке проекта выполнить:
-
 `docker-compose exec php php  build/phing.phar -f build/config.xml`
+
+### Сервер разработки frontend
+В папке app/frontend выполнить:
+`quasar dev -H rt-chat.local`
 
 ### Тестовый пользователь
 Логин для входа: `test@test.ru`
