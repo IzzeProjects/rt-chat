@@ -44,6 +44,7 @@
 </template>
 
 <script>
+const API_BASE_URL = process.env.API_BASE_URL
 export default {
   name: 'Login',
   data () {
@@ -61,7 +62,17 @@ export default {
         console.log('inputs has errors')
         return
       }
-      console.log('valid')
+      console.log(API_BASE_URL)
+
+      this.$axios.post(
+        `${API_BASE_URL}/auth/login`
+      )
+        .then((response) => {
+          this.data = response.data
+        })
+        .catch(() => {
+          console.log(12321)
+        })
     }
   }
 }

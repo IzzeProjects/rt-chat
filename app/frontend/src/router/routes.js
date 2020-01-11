@@ -1,4 +1,4 @@
-import { checkNoAuth } from '../helpers/auth'
+import { checkAuth, checkNoAuth } from '../helpers/auth'
 
 const routes = [
   {
@@ -16,7 +16,7 @@ const routes = [
   },
   {
     path: '/',
-    // beforeEnter: checkAuth,
+    beforeEnter: checkAuth,
     component: () => import('layouts/Main.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') }

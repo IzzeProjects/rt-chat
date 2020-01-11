@@ -56,7 +56,6 @@ module.exports = function (ctx) {
     build: {
       env: {
         API_BASE_URL: JSON.stringify('http://rt-chat.local:8080/api'),
-        API_TIMEOUT: 30000,
       },
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'
