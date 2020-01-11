@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import './helpers/axios'
 export default {
   name: 'App'
 }

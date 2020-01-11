@@ -18,9 +18,8 @@ class LoginController extends ApiController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        dd($request->all());
         $credentials = $request->only('email', 'password');
-        dd(1);
+
         $token = Auth::attempt($credentials);
 
         if (!$token) {

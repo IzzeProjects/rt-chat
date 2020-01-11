@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="rt-chat" default="build" basedir="/var/www/rt-chat">
+
+    <target name="build" depends="
+        copy configs,
+        clear config,
+        install composer dependencies,
+        apply migrations,
+        install yarn dependencies
+    " />
+
+    <!--  ============================================  -->
+    <!--  Target: copy configs                          -->
+    <!--  ============================================  -->
+    <target name="copy configs">
+
+        <echo msg="Copy application configuration files:"/>
+        <copy file="${project.basedir}/build/config/.env" todir="${project.basedir}" overwrite="true" verbose="true" />
+
+    </target>
+
+    <!--  ============================================  -->
+    <!--  Target: clear config                          -->
+    <!--  ============================================  -->
+    <target name="clear config">
+
+        <echo msg="Clear config:"/>
+        <exec command="php artisan config:clear" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+
+    </target>
+
+    <!--  ============================================   -->
+    <!--  Target: install composer dependencies          -->
+    <!--  ============================================   -->
+    <target name="install composer dependencies">
+        <echo msg="Composer dependencies install:"/>
+        <exec command="composer install" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!--  ============================================   -->
+    <!--  Target: apply migrations                          -->
+    <!--  ============================================   -->
+    <target name="apply migrations">
+        <echo msg="Apply migrations:"/>
+        <exec command="php artisan migrate --seed" dir="${project.basedir}" passthru="true" checkreturn="true"/>
+    </target>
+
+    <!--  ============================================   -->
+    <!--  Target: apply migrations                          -->
+    <!--  ============================================   -->
+    <target name="install yarn dependencies">
+        <echo msg="Install yarn dependencies:"/>
+        <exec command="yarn install" dir="${project.basedir}/app/frontend" passthru="true" checkreturn="true"/>
+    </target>
+
+</project>

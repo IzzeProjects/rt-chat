@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::options('/{any}')->where('any', '.*');
+
 Route::prefix('auth')
-    ->middleware('api')
     ->namespace('Api\Auth')
     ->group(function () {
         Route::post('login', 'LoginController');
@@ -28,6 +29,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('api')->get('/test', function (Request $request) {
+Route::post('/test/test', function (Request $request) {
     return 'test route';
 });

@@ -14,4 +14,9 @@ RUN pecl install -o -f redis swoole \
 &&  rm -rf /tmp/pear \
 &&  docker-php-ext-enable redis swoole
 
+RUN apt update \
+&& apt install nodejs -y \
+&& apt install npm -y \
+&& npm install yarn -g -y
+
 WORKDIR /var/www/rt-chat

@@ -14,7 +14,8 @@
         "laravel/tinker": "^1.0",
         "spatie/laravel-cors": "^1.6",
         "swooletw/laravel-swoole": "^2.6",
-        "tymon/jwt-auth": "^1.0.0-rc.5"
+        "tymon/jwt-auth": "^1.0.0-rc.5",
+        "phing/phing": "3.0.x-dev"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
