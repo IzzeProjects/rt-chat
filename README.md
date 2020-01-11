@@ -11,7 +11,11 @@
 
 ### Сборка проекта
 В папке проекта выполнить:
-`docker-compose exec php php  build/phing.phar -f build/config.xml`
+`docker-compose exec php php  build/phing.phar -f build/backend.xml`
+
+### Зависимости frontend
+В папке app/frontend выполнить:
+`yarn install` или `npm install`
 
 ### Сервер разработки frontend
 В папке app/frontend выполнить:
