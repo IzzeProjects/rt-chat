@@ -4,8 +4,8 @@
 
     <target name="build" depends="
         copy configs,
-        clear config,
         install composer dependencies,
+        clear config,
         apply migrations,
         install yarn dependencies
     " />
