@@ -44,13 +44,25 @@
 </template>
 
 <script>
+import { LocalStorage } from 'quasar'
+import jwtDecode from 'jwt-decode'
+
 const API_BASE_URL = process.env.API_BASE_URL
+
+let token = LocalStorage.getItem('user-token') || null
+const jwt = token ? jwtDecode(token) : { exp: 0 }
+const expired = jwt.exp < Math.round(Date.now() / 1000)
+if (expired) {
+  LocalStorage.remove('user-token')
+  token = null
+}
+
 export default {
   name: 'Login',
   data () {
     return {
-      login: '',
-      password: ''
+      login: 'test@test.ru',
+      password: '123123123'
     }
   },
   methods: {
@@ -64,16 +76,32 @@ export default {
       }
       console.log(API_BASE_URL)
 
-      const res = await this.$http.post(`${API_BASE_URL}/auth/login`, {
+      const res = await this.$axios.post(`${API_BASE_URL}/auth/login`, {
         email: this.login,
         password: this.password
       }).catch(() => {
         console.warn('...Catched')
       })
-      if (res) {
-        console.log(res)
+      if (res.errors) {
+        return false
       }
+      const data = res.data.data
+      const token = data.accessToken
+      console.log(token)
+      const jwt = token && jwtDecode(token)
+      console.log(jwt)
+      if (token && jwt) {
+        this.token = token
+        this.expired = false
+        this.profile = Object.assign({}, jwt)
+        LocalStorage.set('user-token', token)
+        LocalStorage.set('user-data', jwt)
+        this.$app.$router.push('/')
+        return true
+      }
+      return false
     }
+
   }
 }
 </script>

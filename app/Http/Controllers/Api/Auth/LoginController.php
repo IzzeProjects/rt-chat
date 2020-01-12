@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Http\Resources\Api\Login\Response;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
+use Tymon\JWTAuth\Token;
 
 /**
  * Авторизация через JWT
@@ -16,18 +22,47 @@ use Illuminate\Http\Response as HttpResponse;
  */
 class LoginController extends ApiController
 {
-    public function __invoke(Request $request): JsonResponse
+    private JWT $jwt;
+
+    /**
+     * LoginController constructor.
+     * @param JWT $jwt
+     */
+    public function __construct(JWT $jwt)
     {
-        $credentials = $request->only('email', 'password');
+        $this->jwt = $jwt;
+    }
 
-        $token = Auth::attempt($credentials);
+    /**
+     * @param LoginRequest $request
+     * @return JsonResponse
+     * @throws \Tymon\JWTAuth\Exceptions\TokenBlacklistedException
+     */
+    public function __invoke(LoginRequest $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = User::query()
+            ->where('email', $request->email)
+            ->first();
 
-        if (!$token) {
-            return new JsonResponse(['errors' => 'Unauthorized'], HttpResponse::HTTP_UNAUTHORIZED);
+        if (is_null($user)) {
+            return $this->errors([['source' => 'user', 'title' => 'Пользователь не найден']], HttpResponse::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse([
-            'token' => $token
-        ]);
+        if (!Hash::check($request->password, $user->password)) {
+            return $this->errors([['source' => 'user', 'title' => 'Не верный логин или пароль']], HttpResponse::HTTP_UNAUTHORIZED);
+        }
+
+        $token = $this->jwt->fromUser($user);
+
+        $payload = $this->jwt->manager()->decode(new Token($token));
+
+//        (new \Ahc\Jwt\JWT('RC9mLbxcoVZTbRq6lXQvJbfbGDBfABHAr9xJ0EmnFwlQyodvwlj4ZVRmCtBveIaC', 'HS256', 3600, 120))->decode($token);
+
+        return $this->data(Response::make([
+            'token' => $token,
+            'payload' => $payload,
+            'user' => $user,
+        ]));
     }
 }

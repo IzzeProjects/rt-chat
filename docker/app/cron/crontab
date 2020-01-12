@@ -1,0 +1,2 @@
+MAILTO="izze.pochta@gmail.com"
+* * * * * /usr/local/bin/php /var/www/rt-chat/artisan swoole:http restart >> /var/log/cron.log 2>&1

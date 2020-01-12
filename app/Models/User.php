@@ -67,6 +67,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'nbf' => time()-3600,
+        ];
     }
 }

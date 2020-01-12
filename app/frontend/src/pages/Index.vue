@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 export default {
   name: 'PageIndex',
   data () {
@@ -61,6 +62,12 @@ export default {
       console.log(this.message)
       this.message = ''
     }
+  },
+  mounted () {
+    const con = io.connect('ws://rt-chat.local:9501', {
+      transports: ['websocket']
+    })
+    console.log(con)
   }
 }
 </script>
