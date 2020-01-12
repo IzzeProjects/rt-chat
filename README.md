@@ -11,7 +11,7 @@
 
 ### Сборка проекта
 В папке проекта выполнить:
-`docker-compose exec php php  build/phing.phar -f build/backend.xml`
+`docker-compose exec app php  build/phing.phar -f build/backend.xml`
 
 ### Зависимости frontend
 В папке app/frontend выполнить:
@@ -20,6 +20,7 @@
 ### Сервер разработки frontend
 В папке app/frontend выполнить:
 `quasar dev -H rt-chat.local`
+(в случае если quasar CLI установлен, но не найден `export PATH="$(yarn global bin):$PATH"`)
 
 ### Тестовый пользователь
 Логин для входа: `test@test.ru`
