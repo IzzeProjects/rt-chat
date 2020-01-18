@@ -14,8 +14,6 @@ services:
     build: docker/app
     volumes:
       - ./:/var/www/rt-chat
-    ports:
-    - 9501:9501
   postgres:
     image: postgres
     environment:
@@ -31,3 +29,12 @@ services:
     image: redis
     ports:
       - 6379:6379
+  cron:
+    build: docker/cron
+    volumes:
+      - ./:/var/www/rt-chat
+    ports:
+    - 9501:9501
+    command: php artisan swoole:http start
+    depends_on:
+      - app
