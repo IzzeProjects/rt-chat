@@ -71,10 +71,8 @@ export default {
       this.$refs.password.validate()
 
       if (this.$refs.login.hasError || this.$refs.password.hasError) {
-        console.log('inputs has errors')
-        return
+        return false
       }
-      console.log(API_BASE_URL)
 
       const res = await this.$axios.post(`${API_BASE_URL}/auth/login`, {
         email: this.login,
@@ -87,16 +85,12 @@ export default {
       }
       const data = res.data.data
       const token = data.accessToken
-      console.log(token)
       const jwt = token && jwtDecode(token)
-      console.log(jwt)
       if (token && jwt) {
         this.token = token
         this.expired = false
-        this.profile = Object.assign({}, jwt)
         LocalStorage.set('user-token', token)
-        LocalStorage.set('user-data', jwt)
-        this.$app.$router.push('/')
+        this.$router.push('/')
         return true
       }
       return false

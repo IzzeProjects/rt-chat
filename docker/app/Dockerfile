@@ -20,6 +20,4 @@ RUN apt update \
 && npm install yarn -g -y \
 && yarn global add @quasar/cli
 
-RUN apt-get update && apt-get -y install cron
-
 WORKDIR /var/www/rt-chat
