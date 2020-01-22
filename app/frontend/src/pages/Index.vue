@@ -51,11 +51,13 @@
 <script>
 import io from 'socket.io-client'
 import { LocalStorage } from 'quasar'
+
 export default {
   name: 'PageIndex',
   data () {
     return {
-      message: ''
+      message: '',
+      websocketConnection: null
     }
   },
   methods: {
@@ -66,11 +68,10 @@ export default {
   },
   mounted () {
     const token = LocalStorage.getItem('user-token')
-    const con = io.connect('ws://rt-chat.local:9501', {
+    this.websocketConnection = io.connect('ws://rt-chat.local:9501', {
       transports: ['websocket'],
       query: { token: token }
     })
-    console.log(con)
   }
 }
 </script>
@@ -79,6 +80,7 @@ export default {
   .chat-page {
     align-items: end;
   }
+
   .chat-page__container {
     width: 100%;
   }

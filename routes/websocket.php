@@ -39,16 +39,11 @@ Websocket::on('connect', function ($websocket, Request $request) {
 
     $websocket->loginUsing($user);
 
-    $websocket->join('test');
-
     echo 'Hello  ! ' . $user->name . ':)' . "\n";
 });
 
 Websocket::on('disconnect', function ($websocket) {
     /** @var \SwooleTW\Http\Websocket\Websocket $websocket */
-    /** @var User $user */
-    $user = auth()->user();
-    echo $user->name ?? 1 . ' is left ! :(' . "\n";
 });
 
 Websocket::on('example', function ($websocket, $data) {
