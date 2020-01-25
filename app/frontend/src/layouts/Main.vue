@@ -105,7 +105,7 @@
             :rules="[val => !!val || 'Поле обязательно']"
           />
           <div class="row justify-end">
-            <q-btn outline label="Войти" class="login-button" />
+            <q-btn outline label="Создать" class="login-button" />
           </div>
         </q-card-section>
       </q-card>

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Api\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 /**
  * Class LoginRequest
@@ -15,13 +14,28 @@ use Illuminate\Http\Request;
 class LoginRequest extends FormRequest
 {
     /**
+     * Кастомные имена атрибутов
+     *
      * @return array
-     * @todo реализовать request
+     */
+    public function attributes(): array
+    {
+        return [
+            'email' => 'Почта',
+            'password' => 'Пароль',
+        ];
+    }
+
+    /**
+     * Правила валидации
+     *
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'email' => ['required']
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:8'],
         ];
     }
 }

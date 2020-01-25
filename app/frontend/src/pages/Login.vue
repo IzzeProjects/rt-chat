@@ -54,6 +54,7 @@ const jwt = token ? jwtDecode(token) : { exp: 0 }
 const expired = jwt.exp < Math.round(Date.now() / 1000)
 if (expired) {
   LocalStorage.remove('user-token')
+  LocalStorage.remove('user-data')
   token = null
 }
 
@@ -66,7 +67,7 @@ export default {
     }
   },
   methods: {
-    async sendLogin () {
+    sendLogin () {
       this.$refs.login.validate()
       this.$refs.password.validate()
 
@@ -74,28 +75,35 @@ export default {
         return false
       }
 
-      const res = await this.$axios.post(`${API_BASE_URL}/auth/login`, {
+      this.$axios.post(`${API_BASE_URL}/auth/login`, {
         email: this.login,
         password: this.password
-      }).catch(() => {
-        console.warn('...Catched')
+      }).then((response) => {
+        const data = response.data.data
+        console.log(data)
+        const token = data.accessToken
+        const jwt = token && jwtDecode(token)
+        if (token && jwt) {
+          this.token = token
+          this.expired = false
+          LocalStorage.set('user-token', token)
+          LocalStorage.set('user-data', data.user)
+          this.$router.push('/')
+          return true
+        }
       })
-      if (res.errors) {
-        return false
-      }
-      const data = res.data.data
-      const token = data.accessToken
-      const jwt = token && jwtDecode(token)
-      if (token && jwt) {
-        this.token = token
-        this.expired = false
-        LocalStorage.set('user-token', token)
-        this.$router.push('/')
-        return true
-      }
-      return false
+        .catch((error) => {
+          const errors = error.response.data.errors
+          Object.keys(errors).forEach(item => {
+            this.$q.notify({
+              color: 'negative',
+              message: errors[item].title,
+              icon: 'report_problem',
+              caption: errors[item].source
+            })
+          })
+        })
     }
-
   }
 }
 </script>

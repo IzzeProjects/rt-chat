@@ -8,9 +8,7 @@ use App\Http\Resources\Api\Login\Response;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as HttpResponse;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\JWT;
 use Tymon\JWTAuth\Token;
 
@@ -46,11 +44,11 @@ class LoginController extends ApiController
             ->first();
 
         if (is_null($user)) {
-            return $this->errors([['source' => 'user', 'title' => 'Пользователь не найден']], HttpResponse::HTTP_NOT_FOUND);
+            return $this->errors([['source' => 'Пользователь', 'title' => 'Пользователь не найден']], HttpResponse::HTTP_NOT_FOUND);
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            return $this->errors([['source' => 'user', 'title' => 'Не верный логин или пароль']], HttpResponse::HTTP_UNAUTHORIZED);
+            return $this->errors([['source' => 'Пользователь', 'title' => 'Не верный логин или пароль']], HttpResponse::HTTP_UNAUTHORIZED);
         }
 
         $token = $this->jwt->fromUser($user);
