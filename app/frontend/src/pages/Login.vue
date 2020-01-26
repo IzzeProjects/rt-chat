@@ -80,7 +80,6 @@ export default {
         password: this.password
       }).then((response) => {
         const data = response.data.data
-        console.log(data)
         const token = data.accessToken
         const jwt = token && jwtDecode(token)
         if (token && jwt) {

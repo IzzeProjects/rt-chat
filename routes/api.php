@@ -14,18 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * Роут для отдачи CORS заголовков метода OPTIONS
+ */
 Route::options('/{any}')->where('any', '.*');
 
 Route::prefix('auth')
-    ->namespace('Api\Auth')
+    ->namespace('Auth')
+    ->name('auth.')
     ->group(function () {
-        Route::post('login', 'LoginController');
+        Route::post('login', 'LoginController')->name('login');
     });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+    Route::prefix('rooms')
+        ->namespace('Room')
+        ->name('room.')
+        ->group(function () {
+            Route::post('', 'CreateController')->name('create');
+        });
 });
 
-Route::post('/test/test', function (Request $request) {
-    return 'test route';
-});
+

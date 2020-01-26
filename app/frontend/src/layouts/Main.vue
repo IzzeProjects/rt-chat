@@ -37,7 +37,7 @@
             color="orange"
             class="sidebar-rooms__btn q-mr-lg"
             label="Создать комнату"
-            @click="roomCreatePopupShow = true"
+            @click="isOpen = true"
           />
         </div>
         <q-list padding>
@@ -76,40 +76,9 @@
         </div>
       </q-img>
     </q-drawer>
-    <q-dialog v-model="roomCreatePopupShow"
-      transition-show="flip-down"
-      transition-hide="flip-up"
-    >
-      <q-card
-        class="bg-grey-10 text-white"
-        style="width: 700px; max-width: 80vw;"
-      >
-        <q-bar>
-          <q-space/>
-          <q-btn dense flat icon="close" v-close-popup class="q-mr-sm">
-            <q-tooltip content-class="bg-grey-8 text-white">Закрыть</q-tooltip>
-          </q-btn>
-        </q-bar>
-        <q-card-section>
-          <div class="text-h6">Создать комнату</div>
-        </q-card-section>
-        <q-card-section class="q-pt-none">
-          <q-input
-            ref="roomCreate"
-            outlined
-            standout="bg-white text-grey-7"
-            v-model="roomCreatePopup.name"
-            label="Название"
-            bg-color="white"
-            class="q-mb-md"
-            :rules="[val => !!val || 'Поле обязательно']"
-          />
-          <div class="row justify-end">
-            <q-btn outline label="Создать" class="login-button" />
-          </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+
+    <room-modal></room-modal>
+
     <q-page-container>
       <router-view/>
     </q-page-container>
@@ -117,14 +86,25 @@
 </template>
 
 <script>
+import RoomModal from '../pages/partials/RoomModal'
+
 export default {
   name: 'Main',
+  components: {
+    RoomModal
+  },
   data () {
     return {
-      leftDrawerOpen: true,
-      roomCreatePopupShow: false,
-      roomCreatePopup: {
-        name: ''
+      leftDrawerOpen: true
+    }
+  },
+  computed: {
+    isOpen: {
+      set (val) {
+        this.$store.commit('room/updateOpenState', val)
+      },
+      get () {
+        return this.$store.state.room.isOpen
       }
     }
   }
