@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -18,9 +17,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $name
  * @property integer $created_by
  * @property Carbon $created_at
- * @property Carbon $update_at
+ * @property Carbon $updated_at
  *
- * @property-read User $user
+ * @property-read User $creator
  *
  * @mixin Builder
  */
@@ -33,7 +32,7 @@ class Room extends Model
      *
      * @return HasOne
      */
-    public function user(): HasOne
+    public function creator(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }

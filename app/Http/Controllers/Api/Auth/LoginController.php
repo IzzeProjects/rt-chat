@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\Auth\LoginRequest;
-use App\Http\Resources\Api\Auth\Login\Response;
+use App\Http\Resources\Auth\Login\Response;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as HttpResponse;

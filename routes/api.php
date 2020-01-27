@@ -33,6 +33,12 @@ Route::middleware('auth:api')->group(function () {
         ->group(function () {
             Route::post('', 'CreateController')->name('create');
         });
+    Route::prefix('users')
+        ->namespace('User')
+        ->name('user.')
+        ->group(function () {
+            Route::get('rooms/created', 'CreatedRoomsController')->name('rooms.created');
+        });
 });
 
 

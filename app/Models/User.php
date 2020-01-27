@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -22,6 +24,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property Carbon $email_verified_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ *
+ * @property-read Collection|Room[] $createdRooms
+ * @property-read Collection|Room[] $rooms
  */
 class User extends Authenticatable implements JWTSubject
 {
@@ -68,7 +73,27 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'nbf' => time()-3600,
+            'nbf' => time() - 3600,
         ];
+    }
+
+    /**
+     * Получение всех созданных комнат
+     *
+     * @return HasMany
+     */
+    public function createdRooms(): HasMany
+    {
+        return $this->hasMany(Room::class, 'created_by', 'id');
+    }
+
+    /**
+     * Получение всех комнат, где данных пользователь участник
+     *
+     * @return BelongsToMany
+     */
+    public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Room::class);
     }
 }

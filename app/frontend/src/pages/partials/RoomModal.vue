@@ -65,8 +65,11 @@ export default {
         return false
       }
 
-      this.$axios.post(`${API_BASE_URL}/rooms`, {
-        name: this.roomCreatePopup.name
+      this.$axios.get(`${API_BASE_URL}/users/rooms/created`, {
+        name: this.roomCreatePopup.name,
+        headers: {
+          'Authorization': 'Bearer ' + LocalStorage.getItem('user-token')
+        }
       }, {
         headers: {
           'Authorization': 'Bearer ' + LocalStorage.getItem('user-token')

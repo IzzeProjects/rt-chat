@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Room;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\Room\CreateRequest;
-use App\Http\Resources\Api\Room\Create\Response;
+use App\Http\Resources\Room\Create\Response;
 use App\Services\RoomService;
 use Illuminate\Http\JsonResponse;
 
