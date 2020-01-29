@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import './helpers/api'
 export default {
   name: 'App'
 }

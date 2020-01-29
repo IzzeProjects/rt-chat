@@ -36,9 +36,6 @@
 </template>
 
 <script>
-import { LocalStorage } from 'quasar'
-const API_BASE_URL = process.env.API_BASE_URL
-
 export default {
   name: 'RoomModal',
   data () {
@@ -59,40 +56,21 @@ export default {
     }
   },
   methods: {
-    sendCreateRoom () {
+    async sendCreateRoom () {
       this.$refs.roomModalName.validate()
+
       if (this.$refs.roomModalName.hasError) {
         return false
       }
 
-      this.$axios.get(`${API_BASE_URL}/users/rooms/created`, {
-        name: this.roomCreatePopup.name,
-        headers: {
-          'Authorization': 'Bearer ' + LocalStorage.getItem('user-token')
-        }
-      }, {
-        headers: {
-          'Authorization': 'Bearer ' + LocalStorage.getItem('user-token')
-        }
-      }).then((response) => {
-        console.log(response.data.data)
+      const response = await this.$http.post(`/rooms`, {
+        name: this.roomCreatePopup.name
       })
-        .catch((error) => {
-          const errors = error.response.data.errors
-          Object.keys(errors).forEach(item => {
-            this.$q.notify({
-              color: 'negative',
-              message: errors[item].title,
-              icon: 'report_problem',
-              caption: errors[item].source
-            })
-          })
-        })
+
+      if (response) {
+        console.log(response)
+      }
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
