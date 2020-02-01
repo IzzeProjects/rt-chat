@@ -54,12 +54,10 @@ import { LocalStorage } from 'quasar'
 
 export default {
   name: 'PageIndex',
-  data () {
-    return {
-      message: '',
-      websocketConnection: null
-    }
-  },
+  data: () => ({
+    message: '',
+    websocketConnection: null
+  }),
   methods: {
     sendMessage () {
       console.log(this.message)

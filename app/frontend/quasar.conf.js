@@ -56,7 +56,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       env: {
-        API_BASE_URL: JSON.stringify('http://rt-chat.local:8080/api')
+        API_BASE_URL: JSON.stringify('http://192.168.88.253:8080/api')
       },
       scopeHoisting: true,
       vueRouterMode: 'history', // available values: 'hash', 'history'

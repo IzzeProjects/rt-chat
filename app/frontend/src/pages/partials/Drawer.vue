@@ -1,49 +1,89 @@
 <template>
   <q-drawer
-    v-model="leftDrawerOpen"
-    show-if-above
+    v-model="isLeftDrawerOpenLocal"
     :width="300"
     :breakpoint="600"
+    show-if-above
   >
     <q-scroll-area
       style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid transparent"
       class="bg-grey-10 text-white"
     >
-      <div class="row sidebar-rooms">
-        <div class="text-body1 q-ml-md q-mt-md q-mb-md">Комнаты</div>
-        <q-btn
-          text-color="black"
-          color="orange"
-          class="sidebar-rooms__btn q-mr-lg"
-          label="Создать комнату"
-          @click="isOpen = true"
-        />
-      </div>
-      <q-list padding>
-        <q-item clickable v-ripple>
-          <q-item-section>
-            Комната 1
-          </q-item-section>
-        </q-item>
+      <q-tabs
+        v-model="tab"
+        dense
+        class="text-grey"
+        active-color="white"
+        indicator-color="orange"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab name="dialogs" label="Диалоги"/>
+        <q-tab name="rooms" label="Комнаты"/>
+      </q-tabs>
+      <q-tab-panels v-model="tab" animated class="bg-grey-10 text-white">
+        <q-tab-panel name="dialogs">
+          <q-select
+            dark
+            filled
+            v-model="model"
+            use-input
+            hide-selected
+            fill-input
+            input-debounce="500"
+            label="Lazy filter"
+            lazy-rules
+            :options="options"
+            @filter="filterFn"
+            @filter-abort="abortFilterFn"
+            style="width: 250px"
+            hint="With hide-selected and fill-input"
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+          <q-list padding>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                Комната 1
+              </q-item-section>
+            </q-item>
 
-        <q-item active clickable v-ripple>
-          <q-item-section>
-            Комната 2
-          </q-item-section>
-        </q-item>
+            <q-item active clickable v-ripple>
+              <q-item-section>
+                Комната 2
+              </q-item-section>
+            </q-item>
 
-        <q-item clickable v-ripple>
-          <q-item-section>
-            Комната 3
-          </q-item-section>
-        </q-item>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                Комната 3
+              </q-item-section>
+            </q-item>
 
-        <q-item clickable v-ripple>
-          <q-item-section>
-            Комната 4
-          </q-item-section>
-        </q-item>
-      </q-list>
+            <q-item clickable v-ripple>
+              <q-item-section>
+                Комната 4
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-tab-panel>
+        <q-tab-panel name="rooms">
+          <q-btn
+            text-color="black"
+            color="orange"
+            class="sidebar-rooms__btn q-mr-lg"
+            label="Создать комнату"
+            @click="isOpen = true"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
+
     </q-scroll-area>
 
     <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
@@ -58,12 +98,28 @@
 </template>
 
 <script>
+const stringOptions = [
+  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+]
 export default {
   name: 'Drawer',
-  data () {
-    return {
-      leftDrawerOpen: true
+  props: {
+    isLeftDrawerOpen: Boolean
+  },
+  data: () => ({
+    isLeftDrawerOpenLocal: null,
+    tab: 'dialogs',
+    userSearch: '',
+    model: null,
+    options: stringOptions
+  }),
+  watch: {
+    isLeftDrawerOpen: function () {
+      this.isLeftDrawerOpenLocal = !this.isLeftDrawerOpenLocal
     }
+  },
+  mounted () {
+    this.isLeftDrawerOpenLocal = this.isLeftDrawerOpen
   },
   computed: {
     isOpen: {
@@ -74,6 +130,25 @@ export default {
         return this.$store.state.room.isOpen
       }
     }
+  },
+  methods: {
+    async filterFn (val, update, abort) {
+      if (val === '') {
+        abort()
+        return
+      }
+      const response = await this.$http.get(`/users?`, {
+        params: {
+          'user[email]': val
+        }
+      })
+      update(() => {
+        this.options = response.data.data
+      })
+    },
+
+    abortFilterFn () {
+    }
   }
 }
 </script>
@@ -82,6 +157,7 @@ export default {
   .q-list > .q-item--active {
     color: #F2C037;
   }
+
   .sidebar-rooms {
     align-items: center;
   }

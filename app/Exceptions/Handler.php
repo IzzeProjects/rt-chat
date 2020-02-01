@@ -4,9 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -45,11 +47,21 @@ class Handler extends ExceptionHandler
      *
      * @param \Illuminate\Http\Request $request
      * @param \Exception $exception
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse|\Illuminate\Http\Response
      * @throws Exception
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ThrottleRequestsException) {
+            return new JsonResponse([
+                'errors' => [
+                    [
+                        'source' => 'Запрос',
+                        'title' => 'Слишком много запросов !',
+                    ]
+                ],
+            ], Response::HTTP_TOO_MANY_REQUESTS);
+        }
         return parent::render($request, $exception);
     }
 

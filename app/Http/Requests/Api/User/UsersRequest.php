@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Api\Room;
+namespace App\Http\Requests\Api\User;
 
 use App\Http\Requests\Api\AuthorizedRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class CreateRequest
+ * Class UsersRequest
  * @package App\Http\Requests\Api\Room
  *
- * @property string $name
+ * @property array $user
  */
-class CreateRequest extends FormRequest
+class UsersRequest extends FormRequest
 {
     use AuthorizedRequest;
     /**
@@ -22,7 +22,8 @@ class CreateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'Название',
+            'user' => 'Пользователь',
+            'user.email' => 'Имя пользователя',
         ];
     }
 
@@ -34,7 +35,8 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
+            'user' => ['array'],
+            'user.email' => ['string', 'min:1'],
         ];
     }
 }

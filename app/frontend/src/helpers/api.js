@@ -34,7 +34,8 @@ instance.interceptors.response.use(response => response, error => {
               color: 'negative',
               message: errors[item].title,
               icon: 'report_problem',
-              caption: errors[item].source
+              caption: errors[item].source,
+              position: 'bottom-right'
             })
           })
         }

@@ -9,7 +9,7 @@
           flat
           dense
           round
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="isLeftDrawerOpen = !isLeftDrawerOpen"
           icon="menu"
           aria-label="Menu"
         />
@@ -20,7 +20,7 @@
 
       </q-toolbar>
     </q-header>
-    <drawer></drawer>
+    <drawer :isLeftDrawerOpen='isLeftDrawerOpen'></drawer>
 
     <room-modal></room-modal>
 
@@ -36,6 +36,9 @@ import Drawer from '../pages/partials/Drawer'
 
 export default {
   name: 'Main',
+  data: () => ({
+    isLeftDrawerOpen: true
+  }),
   components: {
     RoomModal,
     Drawer

@@ -2,15 +2,13 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 /**
- * Авторизованный запрос c формы
+ * Авторизованный запрос
  *
- * Class AuthorizedFormRequest
+ * Trait AuthtorizedRequest
  * @package App\Http\Requests\Api
  */
-class AuthorizedFormRequest extends FormRequest
+trait AuthorizedRequest
 {
     /**
      * Авторизованный запрос

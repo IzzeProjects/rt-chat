@@ -38,13 +38,11 @@
 <script>
 export default {
   name: 'RoomModal',
-  data () {
-    return {
-      roomCreatePopup: {
-        name: ''
-      }
+  data: () => ({
+    roomCreatePopup: {
+      name: ''
     }
-  },
+  }),
   computed: {
     isOpen: {
       get () {

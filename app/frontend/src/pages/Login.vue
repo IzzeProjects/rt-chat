@@ -60,12 +60,10 @@ if (expired) {
 
 export default {
   name: 'Login',
-  data () {
-    return {
-      login: 'test@test.ru',
-      password: '123123123'
-    }
-  },
+  data: () => ({
+    login: 'test@test.ru',
+    password: '123123123'
+  }),
   methods: {
     sendLogin () {
       this.$refs.login.validate()

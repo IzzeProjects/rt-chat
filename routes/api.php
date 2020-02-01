@@ -38,6 +38,7 @@ Route::middleware('auth:api')->group(function () {
         ->name('user.')
         ->group(function () {
             Route::get('rooms/created', 'CreatedRoomsController')->name('rooms.created');
+            Route::get('', 'UsersController')->name('show.all');
         });
 });
 
