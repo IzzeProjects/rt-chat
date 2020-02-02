@@ -26,6 +26,7 @@ class UserResource extends ArrayJsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'createdAt' => $this->created_at->format('c'),
         ];
     }
 }

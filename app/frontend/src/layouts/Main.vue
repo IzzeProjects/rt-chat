@@ -23,6 +23,7 @@
     <drawer :isLeftDrawerOpen='isLeftDrawerOpen'></drawer>
 
     <room-modal></room-modal>
+    <create-dialog-modal></create-dialog-modal>
 
     <q-page-container>
       <router-view/>
@@ -33,6 +34,7 @@
 <script>
 import RoomModal from '../pages/partials/RoomModal'
 import Drawer from '../pages/partials/Drawer'
+import CreateDialogModal from '../pages/partials/CreateDialogModal'
 
 export default {
   name: 'Main',
@@ -40,6 +42,7 @@ export default {
     isLeftDrawerOpen: true
   }),
   components: {
+    CreateDialogModal,
     RoomModal,
     Drawer
   }

@@ -35,7 +35,6 @@
           v-model="message"
           dark
           outlined
-          autofocus
           type="textarea"
           @keydown.enter.exact.prevent
           @keyup.enter.exact="sendMessage"
@@ -60,7 +59,6 @@ export default {
   }),
   methods: {
     sendMessage () {
-      console.log(this.message)
       this.message = ''
     }
   },

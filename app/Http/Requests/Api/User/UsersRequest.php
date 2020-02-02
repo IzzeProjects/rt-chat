@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * Class UsersRequest
  * @package App\Http\Requests\Api\Room
  *
- * @property array $user
+ * @property string|null $email
  */
 class UsersRequest extends FormRequest
 {
@@ -22,8 +22,7 @@ class UsersRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'user' => 'Пользователь',
-            'user.email' => 'Имя пользователя',
+            'email' => 'Имя пользователя',
         ];
     }
 
@@ -35,8 +34,7 @@ class UsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user' => ['array'],
-            'user.email' => ['string', 'min:1'],
+            'email' => ['string', 'min:1'],
         ];
     }
 }

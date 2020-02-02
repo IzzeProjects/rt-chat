@@ -24,20 +24,23 @@
       <q-tab-panels v-model="tab" animated class="bg-grey-10 text-white">
         <q-tab-panel name="dialogs">
           <q-select
+            ref="userSearch"
             dark
-            filled
-            v-model="model"
+            dense
+            v-model="userSearch"
             use-input
             hide-selected
             fill-input
             input-debounce="500"
-            label="Lazy filter"
+            label="Поиск"
             lazy-rules
-            :options="options"
+            :options="usersList"
             @filter="filterFn"
             @filter-abort="abortFilterFn"
             style="width: 250px"
-            hint="With hide-selected and fill-input"
+            hint="Начните вводить почту пользователя"
+            color="orange"
+            option-label="email"
           >
             <template v-slot:no-option>
               <q-item>
@@ -79,7 +82,7 @@
             color="orange"
             class="sidebar-rooms__btn q-mr-lg"
             label="Создать комнату"
-            @click="isOpen = true"
+            @click="isRoomOpen = true"
           />
         </q-tab-panel>
       </q-tab-panels>
@@ -98,9 +101,6 @@
 </template>
 
 <script>
-const stringOptions = [
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-]
 export default {
   name: 'Drawer',
   props: {
@@ -109,25 +109,41 @@ export default {
   data: () => ({
     isLeftDrawerOpenLocal: null,
     tab: 'dialogs',
-    userSearch: '',
-    model: null,
-    options: stringOptions
+    userSearch: null,
+    usersList: []
   }),
   watch: {
     isLeftDrawerOpen: function () {
       this.isLeftDrawerOpenLocal = !this.isLeftDrawerOpenLocal
+    },
+    userSearch: function (value) {
+      if (value) {
+        this.dialogCreateModal = {
+          isOpen: true,
+          user: value
+        }
+        this.userSearch = null
+      }
     }
   },
   mounted () {
     this.isLeftDrawerOpenLocal = this.isLeftDrawerOpen
   },
   computed: {
-    isOpen: {
+    isRoomOpen: {
       set (val) {
         this.$store.commit('room/updateOpenState', val)
       },
       get () {
         return this.$store.state.room.isOpen
+      }
+    },
+    dialogCreateModal: {
+      set (val) {
+        this.$store.commit('dialog/updateCrateModalState', val)
+      },
+      get () {
+        return this.$store.state.dialog.createModal
       }
     }
   },
@@ -137,14 +153,20 @@ export default {
         abort()
         return
       }
-      const response = await this.$http.get(`/users?`, {
+      const response = await this.$http.get('/users', {
         params: {
-          'user[email]': val
+          email: val
         }
       })
-      update(() => {
-        this.options = response.data.data
-      })
+
+      if (response) {
+        update(() => {
+          this.usersList = response.data.data
+        })
+        return
+      }
+
+      abort()
     },
 
     abortFilterFn () {

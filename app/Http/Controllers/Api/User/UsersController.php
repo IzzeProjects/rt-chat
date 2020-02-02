@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\DataProviders\UserDataProvider;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\User\UsersRequest;
+use App\Http\Resources\Entities\UserResource;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -29,11 +30,11 @@ class UsersController extends ApiController
     /**
      * @param UsersRequest $request
      * @return JsonResponse
-     * @todo реализация
      */
     public function __invoke(UsersRequest $request): JsonResponse
     {
-        $users = $this->dataProvider->getUsers($request);
-        return $this->data($users);
+        return $this->data(UserResource::collection(
+            $this->dataProvider->getUsers($request)
+        ));
     }
 }

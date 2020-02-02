@@ -30,21 +30,13 @@ class UserDataProvider
      *
      * @param UsersRequest $request
      * @return Collection
-     * @todo Полнотекстовый поиск
      */
     public function getUsers(UsersRequest $request): Collection
     {
         $builder = $this->user->query();
-//        $builder->whereRaw(
-//            "MATCH(users.name, users.surname) AGAINST(:search in BOOLEAN MODE)",
-//            [':search' => "$request->search*"]
-//        );
-        if ($request->user['email'] ?? false) {
-            $builder = $this->user->whereRaw(
-                'users.email = :users_email',
-                [
-                    'users_email' => $request->user['email']
-                ]);
+
+        if ($request->email ?? false) {
+            $builder = $this->user->where('email', 'like', $request->email . '%');
         }
 
         return $builder->get();
