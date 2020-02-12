@@ -2,7 +2,6 @@
 
 namespace App\DataProviders;
 
-use App\Http\Requests\Api\User\UsersRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -26,18 +25,18 @@ class UserDataProvider
     }
 
     /**
-     * Получение всех пользователей
+     * Полчение всех пользователей по email исключая данного пользователя
      *
-     * @param UsersRequest $request
+     * @param string $email
+     * @param User $user
      * @return Collection
      */
-    public function getUsers(UsersRequest $request): Collection
+    public function getUsersByEmailExceptGivenUser(string $email, User $user): Collection
     {
         $builder = $this->user->query();
 
-        if ($request->email ?? false) {
-            $builder = $this->user->where('email', 'like', $request->email . '%');
-        }
+        $builder->where('email', 'like', $email . '%');
+        $builder->where('id', '<>', $user->id);
 
         return $builder->get();
     }

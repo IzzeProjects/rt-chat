@@ -153,7 +153,7 @@ export default {
         abort()
         return
       }
-      const response = await this.$http.get('/users', {
+      const response = await this.$http.get('/dialogs/users', {
         params: {
           email: val
         }

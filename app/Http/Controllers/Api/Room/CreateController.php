@@ -65,6 +65,6 @@ class CreateController extends ApiController
             ], HttpResponse::HTTP_BAD_REQUEST);
         }
 
-        return $this->data(Response::make($room));
+        return $this->data(Response::make($room), HttpResponse::HTTP_CREATED);
     }
 }

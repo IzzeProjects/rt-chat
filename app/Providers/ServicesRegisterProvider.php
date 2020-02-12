@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\DialogService;
 use App\Services\RoomService;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,7 @@ class ServicesRegisterProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(RoomService::class, RoomService::class);
+        $this->app->singleton(DialogService::class, DialogService::class);
     }
 
     /**

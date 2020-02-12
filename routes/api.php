@@ -38,7 +38,13 @@ Route::middleware('auth:api')->group(function () {
         ->name('user.')
         ->group(function () {
             Route::get('rooms/created', 'CreatedRoomsController')->name('rooms.created');
-            Route::get('', 'UsersController')->name('show.all');
+        });
+    Route::prefix('dialogs')
+        ->namespace('Dialog')
+        ->name('dialog.')
+        ->group(function () {
+            Route::post('', 'CreateController')->name('create');
+            Route::get('users', 'UsersController')->name('users');
         });
 });
 

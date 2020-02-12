@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\Dialog;
 
 use App\DataProviders\UserDataProvider;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Requests\Api\User\UsersRequest;
+use App\Http\Requests\Api\Dialog\UsersRequest;
 use App\Http\Resources\Entities\UserResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Получение всех пользователей
+ * Событие создания диалога
  *
  * Class UsersController
- * @package App\Http\Controllers\Api\User
+ * @package App\Http\Controllers\Api\Dialog
  */
 class UsersController extends ApiController
 {
@@ -33,8 +34,13 @@ class UsersController extends ApiController
      */
     public function __invoke(UsersRequest $request): JsonResponse
     {
-        return $this->data(UserResource::collection(
-            $this->dataProvider->getUsers($request)
-        ));
+        /** @var User $user */
+        $user = $request->user();
+
+        return $this->data(
+            UserResource::collection(
+                $this->dataProvider->getUsersByEmailExceptGivenUser($request->email, $user)
+            )
+        );
     }
 }

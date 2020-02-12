@@ -49,9 +49,16 @@ export default {
     }
   },
   methods: {
-    sendCreateRoom () {
-      // TODO метод создания диалога
-      console.log(this.user)
+    async sendCreateRoom () {
+      const response = await this.$http.post(`/dialogs`, {
+        user: {
+          id: this.user.id
+        }
+      })
+
+      if (response) {
+        console.log(response)
+      }
     }
   }
 }
